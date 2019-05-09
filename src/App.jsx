@@ -8,11 +8,21 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: { name: "Adriana" },
+      currentUser: { name: "" },
       socket: null,
       messages: []
     };
   }
+
+  setUsername = user => {
+    this.setState({ currentUser: { name: user } });
+  };
+
+  // handleChange = event => {
+  //   console.log("event", event);
+  //   this.setState({ currentUser: "" });
+  //   // console.log("value", value);
+  // };
   componentDidMount() {
     const socket = new WebSocket("ws://localhost:3001");
     socket.onopen = function(event) {
@@ -29,7 +39,7 @@ class App extends Component {
   }
 
   sendMessage = (content, username) => {
-    console.log("content", content);
+    console.log("username", username);
     const message = {
       type: "postMessage",
       // id: id,
@@ -44,7 +54,10 @@ class App extends Component {
     return (
       <div>
         <Chatbar
-          currentUser={this.state.currentUser.name}
+          // ={this.state.value}
+          // onChange={this.handleChange}
+          username={this.state.currentUser.name}
+          setName={this.setUsername}
           sendMessage={this.sendMessage}
         />
         <MessageList messages={this.state.messages} />
