@@ -4,17 +4,6 @@ import MessageList from "./MessageList.jsx";
 
 const URL = "ws://localhost:3001";
 
-function generateRandomString() {
-  var text = "";
-  var possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (var i = 0; i < 7; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -31,13 +20,19 @@ class App extends Component {
     };
 
     this.setState({ socket: socket });
+    socket.onmessage = event => {
+      const receivedMessage = JSON.parse(event.data);
+      const newMessageList = this.state.messages.concat(receivedMessage);
+
+      this.setState({ messages: newMessageList });
+    };
   }
 
   sendMessage = (content, username) => {
     console.log("content", content);
     const message = {
       type: "postMessage",
-      id: generateRandomString(),
+      // id: id,
       username: username,
       content: content
     };
