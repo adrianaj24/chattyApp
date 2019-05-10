@@ -37,7 +37,6 @@ body {
 
 .message {
   display: flex;
-  padding: 5px;
 }
 
 .message.system {
@@ -63,6 +62,8 @@ body {
 
 .navbar {
   background: rgb(4, 128, 25);
+  float: none;
+  clear: both;
   border-bottom: 1px solid black;
   height: 60px;
   left: 0;
@@ -70,6 +71,12 @@ body {
   position: fixed;
   right: 0;
   top: 0;
+}
+
+.navbar .online-users {
+  float: right;
+  margin-top: 1rem;
+  margin-right: 1rem;
 }
 
 .navbar-brand {

@@ -2,18 +2,30 @@ import React, { Component } from "react";
 
 class Message extends Component {
   render() {
-    return  (
+    if (this.props.message.type === "postNotification") {
+      return (
+        <div>
+          <div className="notification">
+            <span className="message-username">
+              {this.props.message.username}
+            </span>
+            <span className="notification-content">
+              {this.props.message.content}
+            </span>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div>
         <div className="message">
-            {this.props.message.type}
-        <span className="message-username">
-          {this.props.message.username}
-        </span>
-        <span className="message-content">
-          {this.props.message.content}
-        </span>
+          <span className="message-username">
+            {this.props.message.username}
+          </span>
+          <span className="message-content">{this.props.message.content}</span>
+        </div>
       </div>
     );
   }
 }
 export default Message;
-        

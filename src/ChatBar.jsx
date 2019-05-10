@@ -4,33 +4,46 @@ class Chatbar extends Component {
   constructor(props) {
     super(props);
     this._handleKeyPress = this._handleKeyPress.bind(this);
-    this.userEntered = this.userEntered.bind(this);
-    this.state = { newUser: props.username };
+    this._handleKeyUser = this._handleKeyUser.bind(this);
+    // this.state = { newUser: props.username };
   }
 
-  // on keypress enter, ths newUser becomes the value in the input username field thru the userEntered fu
-  userEntered(event) {
-    this.setState({ newUser: event.target.value });
+  // on keypress enter, ths newUser becomes the value in the input username field thru the userEntered function
+  _handleKeyUser(event) {
+    let newUser = event.target.value;
+    if (event.key === "Enter") {
+      if (!newUser) {
+        newUser = "Anonymous";
+      }
+      if (newUser !== this.props.username) {
+        this.props.setName(newUser);
+        console.log("newuser", newUser);
+        this.props.sendMessage(
+          `${this.props.username} changed their username to: ${newUser}`,
+          "postNotification"
+        );
+      }
+    }
   }
-
+  //created message and send to app.jsx with username
   _handleKeyPress(e) {
     const messageInput = e.target.value;
     // let username = this.refs.username.value;
     if (e.key === "Enter") {
-      console.log("this");
-      this.props.sendMessage(messageInput, this.state.newUser);
+      if (!messageInput) {
+        return;
+      }
+      e.target.value = "";
+      console.log("message-sent");
+      this.props.sendMessage(messageInput, "postMessage");
     }
   }
   render() {
     return (
       <footer className="chatbar">
-        {this.props.username}
         <input
           className="chatbar-username"
-          value={this.state.newUser}
-          onChange={this.userEntered}
-          // {event => this.setState({ newUser: event.target.value })}
-          //   onKeyPress={this._handleKeyPress}
+          onKeyPress={this._handleKeyUser}
           placeholder="Your Name (Optional)"
         />
         <input
