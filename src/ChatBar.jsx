@@ -5,7 +5,6 @@ class Chatbar extends Component {
     super(props);
     this._handleKeyPress = this._handleKeyPress.bind(this);
     this._handleKeyUser = this._handleKeyUser.bind(this);
-    // this.state = { newUser: props.username };
   }
 
   // on keypress enter, ths newUser becomes the value in the input username field thru the userEntered function
@@ -17,7 +16,6 @@ class Chatbar extends Component {
       }
       if (newUser !== this.props.username) {
         this.props.setName(newUser);
-        console.log("newuser", newUser);
         this.props.sendMessage(
           `${this.props.username} changed their username to: ${newUser}`,
           "postNotification"
@@ -28,13 +26,11 @@ class Chatbar extends Component {
   //created message and send to app.jsx with username
   _handleKeyPress(e) {
     const messageInput = e.target.value;
-    // let username = this.refs.username.value;
     if (e.key === "Enter") {
       if (!messageInput) {
         return;
       }
       e.target.value = "";
-      console.log("message-sent");
       this.props.sendMessage(messageInput, "postMessage");
     }
   }

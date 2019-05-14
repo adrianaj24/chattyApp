@@ -20,7 +20,6 @@ console.log("clients", wss.clients);
 wss.broadcast = function broadcast(msg) {
   wss.clients.forEach(function each(client) {
     client.send(JSON.stringify(msg));
-    console.log("number of users", JSON.stringify(msg));
   });
 };
 

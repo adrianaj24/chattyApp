@@ -14,6 +14,7 @@ class App extends Component {
       onlineUsers: null
     };
     this.sendMessage = this.sendMessage.bind(this);
+    this.setupBeforeUnloadListener = this.setupBeforeUnloadListener.bind(this);
   }
 
   setUsername = user => {
@@ -24,18 +25,25 @@ class App extends Component {
     }
   };
 
+  setupBeforeUnloadListener() {
+    window.addEventListener("beforeunload", ev => {
+      ev.preventDefault();
+      this.sendMessage(
+        `${this.state.currentUser.name} has left the chat`,
+        "postNotification"
+      );
+    });
+  }
+
   componentDidMount() {
-    console.log("socket1", this.socket);
     this.socket.onopen = event => {
       console.warn("socket connection established");
       this.socket.onmessage = event => {
         const receivedMessage = JSON.parse(event.data);
-        console.log("this is the message", receivedMessage);
         const newMessageList = this.state.messages.concat(receivedMessage);
 
         this.setState({ messages: newMessageList });
         if (Number.isInteger(receivedMessage)) {
-          console.log("RM2", receivedMessage);
           const onlineUsers = receivedMessage;
           this.setState({ onlineUsers });
         }
@@ -44,8 +52,7 @@ class App extends Component {
           this.setState({ userJoining });
         }
       };
-
-      console.log(event);
+      this.setupBeforeUnloadListener();
     };
   }
   //receives the message from chatbar handlekeypress then sends to server
